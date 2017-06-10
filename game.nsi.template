@@ -3,6 +3,7 @@
 ; HM NIS Edit Wizard helper defines
 !define GAMEFOLDER ""
 !define PRODUCT_NAME ""
+!define EXEC_NAME ""
 !define PRODUCT_VERSION ""
 !define PRODUCT_PUBLISHER ""
 !define PRODUCT_WEB_SITE ""
@@ -48,17 +49,12 @@ ShowUnInstDetails show
 Section "MainSection" SEC01
   SetOutPath "$INSTDIR"
   SetOverwrite ifnewer
-  File /r "${GAMEFOLDER}\Audio"
-  File /r "${GAMEFOLDER}\Data"
-  File /r "${GAMEFOLDER}\Fonts"
-  File /r "${GAMEFOLDER}\Graphics"
-  File /r "${GAMEFOLDER}\System"
-  File "${GAMEFOLDER}\Game.exe"
-  File "${GAMEFOLDER}\Game.ini"
-  File "${GAMEFOLDER}\Game.rvproj2"
+  File "${GAMEFOLDER}\${EXEC_NAME}.exe"
+  File "${GAMEFOLDER}\${EXEC_NAME}.pck"
+
   CreateDirectory "$SMPROGRAMS\${PRODUCT_NAME}"
-  CreateShortCut "$SMPROGRAMS\${PRODUCT_NAME}\${PRODUCT_NAME}.lnk" "$INSTDIR\Game.exe"
-  CreateShortCut "$DESKTOP\${PRODUCT_NAME}.lnk" "$INSTDIR\Game.exe"
+  CreateShortCut "$SMPROGRAMS\${PRODUCT_NAME}\${PRODUCT_NAME}.lnk" "$INSTDIR\${EXEC_NAME}.exe"
+  CreateShortCut "$DESKTOP\${PRODUCT_NAME}.lnk" "$INSTDIR\${EXEC_NAME}.exe"
 SectionEnd
 
 Section -AdditionalIcons
@@ -69,10 +65,10 @@ SectionEnd
 
 Section -Post
   WriteUninstaller "$INSTDIR\uninst.exe"
-;  WriteRegStr HKLM "${PRODUCT_DIR_REGKEY}" "" "$INSTDIR\Game.exe"
+;  WriteRegStr HKLM "${PRODUCT_DIR_REGKEY}" "" "$INSTDIR\${EXEC_NAME}.exe"
   WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "DisplayName" "$(^Name)"
   WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "UninstallString" "$INSTDIR\uninst.exe"
-  WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "DisplayIcon" "$INSTDIR\Game.exe"
+  WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "DisplayIcon" "$INSTDIR\${EXEC_NAME}.exe"
   WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "DisplayVersion" "${PRODUCT_VERSION}"
   WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "URLInfoAbout" "${PRODUCT_WEB_SITE}"
   WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "Publisher" "${PRODUCT_PUBLISHER}"
@@ -93,14 +89,8 @@ Section Uninstall
   Delete "$INSTDIR\${PRODUCT_NAME}.url"
   Delete "$INSTDIR\uninst.exe"
 
-  RMDir /r "$INSTDIR\Audio"
-  RMDir /r "$INSTDIR\Data"
-  RMDir /r "$INSTDIR\Fonts"
-  RMDir /r "$INSTDIR\Graphics"
-  RMDir /r "$INSTDIR\System"
-  Delete "$INSTDIR\Game.exe"
-  Delete "$INSTDIR\Game.ini"
-  Delete "$INSTDIR\Game.rvproj2"
+  Delete "$INSTDIR\${EXEC_NAME}.exe"
+  Delete "$INSTDIR\${EXEC_NAME}.pck"
 
   Delete "$DESKTOP\${PRODUCT_NAME}.lnk"
 

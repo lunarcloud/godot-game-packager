@@ -1,11 +1,5 @@
 #!/bin/bash
 
-if [[ ! -e mkxp-20150204.tar.xz ]]; then
-    #Get copy of MKXP
-    wget http://ancurio.bplaced.net/mkxp/generic/mkxp-20150204.tar.xz # or latest version
-    tar xf mkxp*.tar.xz
-fi
-
 if [[ $# -eq 0 ]] ; then
     DATA_DIR="."
 else
@@ -34,6 +28,9 @@ COMPANY_UPPER=$(grep 'Company' $DATA_DIR/gameinfo.conf | cut -d'=' -f 2- | tr -d
 COMPANY_LOWER=$(echo $COMPANY_UPPER  | tr '[:upper:]' '[:lower:]')
 COMPANY_LOWER_UNDERSCORE=$(echo $COMPANY_LOWER  | sed -e 's/ /_/g')
 COMPANY_LOWER_DASH=$(echo $COMPANY_LOWER  | sed -e 's/ /-/g')
+
+
+EXECUTABLENAME=$(grep 'ExecutableName' "$DATA_DIR"/gameinfo.conf | cut -d'=' -f 2 | tr -d '\n' | tr -d '\r')
 
 VERSION=$(grep 'Version' $DATA_DIR/gameinfo.conf | cut -d'=' -f 2 | tr -d '\n' | tr -d '\r')
 SHORT_DESCRIPTION=$(grep 'Description' $DATA_DIR/gameinfo.conf | cut -d'=' -f 2 | tr -d '\n' | tr -d '\r')
@@ -78,7 +75,6 @@ echo "Populating fakeroot..."
 cp ./control.temp       "$DEBIANNAME32"/DEBIAN/control
 cp -r "$GAMEFOLDER"/*   "$DEBIANNAME32"/opt/"$PACKAGENAME"/
 cp game.sh              "$DEBIANNAME32"/opt/"$PACKAGENAME"/
-cp mkxp.linux.conf      "$DEBIANNAME32"/opt/"$PACKAGENAME"/mkxp.conf
 
 #Copy script-dialog
 mkdir "$DEBIANNAME32"/opt/"$PACKAGENAME"/script-dialog
@@ -95,12 +91,15 @@ fi
 cp $DATA_DIR/game.png "$DEBIANNAME32"/opt/"$PACKAGENAME"/
 cp ./app.desktop.temp "$DEBIANNAME32"/usr/share/applications/"$PACKAGENAME".desktop
 
+#Create 32bit
+
 if [ "$ARCH" == "32" ] || [ "$ARCH" == "both" ]; then
 
-    # arch specific stuff
+    #fix architecture
     sed -i "s/Architecture: \(.*\)/Architecture: i386/"  "$DEBIANNAME32"/DEBIAN/control
-    cp -r mkxp-*/lib        "$DEBIANNAME32"/opt/"$PACKAGENAME"/
-    cp mkxp-*/mkxp.x86      "$DEBIANNAME32"/opt/"$PACKAGENAME"/"$EXECUTABLENAME".x86
+
+    # arch specific stuff
+    cp $GAMEFOLDER/"$EXECUTABLENAME".x86      "$DEBIANNAME32"/opt/"$PACKAGENAME"/
 
     # Build the package
     echo "attempting to build $DEBIANNAME32.deb ..."
@@ -108,7 +107,6 @@ if [ "$ARCH" == "32" ] || [ "$ARCH" == "both" ]; then
 
     # Remove arch specific files
     rm "$DEBIANNAME32"/opt/"$PACKAGENAME"/"$EXECUTABLENAME".x86
-    rm -r "$DEBIANNAME32"/opt/"$PACKAGENAME"/lib
 fi
 
 #Create 64bit
@@ -117,12 +115,11 @@ mv "$DEBIANNAME32" "$DEBIANNAME64"
 
 if [ "$ARCH" == "64" ] || [ "$ARCH" == "both" ]; then
 
-    # arch specific stuff
-    cp mkxp-*/mkxp.amd64      "$DEBIANNAME64"/opt/"$PACKAGENAME"/"$EXECUTABLENAME".amd64
-    cp -r mkxp-*/lib64        "$DEBIANNAME64"/opt/"$PACKAGENAME"/lib64
-
     #fix architecture
     `sed -i "s/Architecture: \(.*\)/Architecture: amd64/"  "$DEBIANNAME64"/DEBIAN/control`
+
+    # arch specific stuff
+    cp $GAMEFOLDER/"$EXECUTABLENAME".amd64      "$DEBIANNAME32"/opt/"$PACKAGENAME"/
 
     # Build the package
     echo "attempting to build $DEBIANNAME64.deb ..."
