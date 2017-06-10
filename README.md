@@ -1,4 +1,4 @@
-# RPG Maker XP / VX / VX Ace Installer Creation Scripts
+# Godot Game Installer Creation Scripts
 Create installers for Godot games for Windows, Mac, and Linux (Debian / Ubuntu).
 
 ## Environment
