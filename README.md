@@ -11,10 +11,11 @@ It may not work on macOS. Patches to script-dialog and/or this to make it work w
 ## Instructions
   1. Create a folder for your installer project
   2. Drop your Godot game exports and "*.pck" data into this folder
-  3. Create the game.png
-  4. Create your gameinfo.conf
-  5. (Optional) create the company.png
-  6. (Optional) create a license.txt
-  7. Run gui.sh or individually run build-* scripts
-  8. ???
-  9. Profit!
+  3. Make sure the linux exports are marked as executable ( sudo chmod +x FILE )
+  4. Create the game.png
+  5. Create your gameinfo.conf
+  6. (Optional) create the company.png
+  7. (Optional) create a license.txt
+  8. Run gui.sh or individually run build-* scripts
+  9. ???
+  10. Profit!
