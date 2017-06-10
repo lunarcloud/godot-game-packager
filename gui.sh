@@ -28,7 +28,7 @@ if [[ -f "$DATA_DIR/game.png" ]]; then
     WINDOW_ICON="$DATA_DIR/game.png"
 fi
 
-GAMEFOLDER=$(find "$DATA_DIR" ! -path "*_i386*" ! -path "*_amd64/*" ! -path "*.app*" -name 'Game.exe' -printf '%h\n' | sort -ur | tr -d '\n' | tr -d '\r')
+GAMEFOLDER=$(find "$DATA_DIR" ! -path "*_i386*" ! -path "*_amd64/*" ! -path "*.app*" -name '*.pck' -printf '%h\n' | sort -ur | tr -d '\n' | tr -d '\r')
 
 if [[ ! -d "$GAMEFOLDER" ]]; then
     messagebox "No game folder found inside \"$DATA_DIR\""
@@ -40,20 +40,10 @@ ANSWER=($(checklist "What outputs do you want to build? " 5  \
                 "deb32" "Linux: 32-bit Debian Package" ON\
                 "deb64" "Linux: 64-bit Debian Package" ON\
                 "win" "Windows: NSIS Installer" ON\
-                "macdmg" "macOS: DMG with App Bundle and more inside" ON\
-                "maczip" "macOS: Zipped App Bundle" OFF ))
+                "macdmg" "macOS: DMG with App Bundle and more inside" ON))
 
 if [[ "${ANSWER[@]}" == "" ]]; then
   exit 0;
-fi
-
-if [[ " ${ANSWER[@]} " =~ "macdmg" ]] || [[ " ${ANSWER[@]} " =~ "maczip" ]]; then
-    MKXP_MAC="mkxp-16-8-2015-withrubyzlib.zip"
-
-    if [[ ! -f "$CURRENT_DIR/$MKXP_MAC" ]]; then
-        messagebox "Please '$MKXP_MAC' download from 'https://app.box.com/v/mkxpmacbuilds' to \"$CURRENT_DIR\"."
-        exit 32;
-    fi
 fi
 
 ACTIVITY="Building ${#ANSWER[*]} items..."
@@ -69,12 +59,8 @@ ACTIVITY="Building ${#ANSWER[*]} items..."
   fi
   progressbar_update 40
 
-  if [[ " ${ANSWER[@]} " =~ "macdmg" ]] && [[ " ${ANSWER[@]} " =~ "maczip" ]]; then
-    bash build-macOS.sh "$DATA_DIR" "both"
-  elif [[ " ${ANSWER[@]} " =~ "macdmg" ]]; then
+  if [[ " ${ANSWER[@]} " =~ "macdmg" ]]; then
     bash build-macOS.sh "$DATA_DIR" "dmg"
-  elif [[ " ${ANSWER[@]} " =~ "maczip" ]]; then
-    bash build-macOS.sh "$DATA_DIR" "zip"
   fi
   progressbar_update 80
 

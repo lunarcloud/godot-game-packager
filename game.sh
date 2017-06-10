@@ -1,19 +1,19 @@
 #!/usr/bin/env bash
-CURRENT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-source "$CURRENT_DIR"/script-dialog/script-ui.sh #folder local version
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+source "$SCRIPT_DIR"/script-dialog/script-dialog.sh #folder local version
 
 relaunchIfNotVisible
 
 APP_NAME="Game Launcher"
-WINDOW_ICON="$CURRENT_DIR/game.png"
+WINDOW_ICON="$SCRIPT_DIR/game.png"
 
-LICENSE="$CURRENT_DIR"LICENSE
+LICENSE="$SCRIPT_DIR"LICENSE
 LICENSE_ACCEPTED="$LICENSE"-accepted
 
 if [[ ! -f $LICENSE_ACCEPTED &&  -f $LICENSE ]]; then
     ACTIVITY="License"
     messagebox "You must accept the following license to use this software."
-    displayFile "$CURRENT_DIR"/LICENSE
+    displayFile "$SCRIPT_DIR"/LICENSE
     yesno "Do you agree to and accept the license?";
 
     ANSWER=$?
@@ -28,13 +28,9 @@ fi
 
 MACHINE_TYPE=`uname -m`
 if [ ${MACHINE_TYPE} == 'x86_64' ]; then
-    MKXP_SUPPORT=true
-    LAUNCH="$CURRENT_DIR"$(find . -maxdepth 1 -name '*.amd64')
-elif [ ${MACHINE_TYPE} == 'x86_64' ]; then
-    MKXP_SUPPORT=true
-    LAUNCH="$CURRENT_DIR"$(find . -maxdepth 1 -name '*x86')
+    LAUNCH=$(find "$SCRIPT_DIR" -maxdepth 1 -name '*.amd64')
 else
-    MKXP_SUPPORT=false
+    LAUNCH=$(find "$SCRIPT_DIR" -maxdepth 1 -name '*.x86')
 fi
 
 if [[ ! -f $LAUNCH ]]; then
@@ -46,5 +42,6 @@ if [[ ! -x $LAUNCH ]]; then
     exit 3;
 fi
 
+cd $SCRIPT_DIR
 $LAUNCH
 exit 0

@@ -8,7 +8,7 @@ else
     DATA_DIR="$1"
 fi
 
-GAMEFOLDER=$(find "$DATA_DIR" ! -path "*_i386*" ! -path "*_amd64/*" ! -path "*.app*" -name 'Game.exe' -printf '%h\n' | sort -ur | tr -d '\n' | tr -d '\r')
+GAMEFOLDER=$(find "$DATA_DIR" ! -path "*_i386*" ! -path "*_amd64/*" ! -path "*.app*" -name '*.pck' -printf '%h\n' | sort -ur | tr -d '\n' | tr -d '\r')
 
 if [[ ! -d "$GAMEFOLDER" ]]; then
     echo "No game folder found inside \"$DATA_DIR\""
@@ -26,7 +26,7 @@ echo "Creating nsi file..."
 cp game.nsi.template game.nsi
 sed -i "s#define GAMEFOLDER \"\(.*\)\"#define GAMEFOLDER \"$(echo "$GAMEFOLDER" | sed -e 's/\./\\\./g')\"#"  "./game.nsi"
 sed -i "s/define PRODUCT_NAME \"\(.*\)\"/define PRODUCT_NAME \"$(echo "$TITLE" | sed -e 's/\./\\\./g')\"/"  "./game.nsi"
-sed -i "s/define PRODUCT_NAME \"\(.*\)\"/define EXEC_NAME \"$(echo "$EXECNAME" | sed -e 's/\./\\\./g')\"/"  "./game.nsi"
+sed -i "s/define EXEC_NAME \"\(.*\)\"/define EXEC_NAME \"$(echo "$EXECNAME" | sed -e 's/\./\\\./g')\"/"  "./game.nsi"
 sed -i "s/define PRODUCT_VERSION \"\(.*\)\"/define PRODUCT_VERSION \"$(echo "$VERSION" | sed -e 's/\./\\\./g')\"/"  "./game.nsi"
 sed -i "s/define PRODUCT_PUBLISHER \"\(.*\)\"/define PRODUCT_PUBLISHER \"$(echo "$PUBLISHER" | sed -e 's/\./\\\./g')\"/"  "./game.nsi"
 sed -i "s/define PRODUCT_WEB_SITE \"\(.*\)\"/define PRODUCT_WEB_SITE \"$(echo "$WEB_SITE" | sed -e 's/\./\\\./g')\"/"  "./game.nsi"

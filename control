@@ -3,7 +3,7 @@ Maintainer: aoeu
 Homepage: aoeu
 Package: aoeu
 Architecture: all
-Depends: libogg0 libvorbis0a libsndfile1 liblzma5
+Depends: libogg0, libvorbis0a, libsndfile1, liblzma5
 Recommends:
 Suggests:
 Version: 1
