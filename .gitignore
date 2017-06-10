@@ -1,0 +1,24 @@
+# Outputs
+control.temp
+app.desktop.temp
+gameinfo.conf
+company.png
+game.png
+zoogame
+*.kate-swp
+*~
+*_i386/
+*_amd64/
+mkxp-*
+*.amd64
+*.x86
+*.deb
+LICENSE-accepted
+license.txt
+*.exe
+*.app
+*.zip
+dmg-contents/License.txt
+*.nsi
+*.dmg
+./game/*
