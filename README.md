@@ -10,7 +10,7 @@ It may not work on macOS. Patches to script-dialog and/or this to make it work w
 
 ## Instructions
   1. Create a folder for your installer project
-  2. Drop your Godot game into this folder
+  2. Drop your Godot game exports and "*.pck" data into this folder
   3. Create the game.png
   4. Create your gameinfo.conf
   5. (Optional) create the company.png
