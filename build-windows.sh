@@ -15,7 +15,7 @@ if [[ ! -d "$GAMEFOLDER" ]]; then
     exit 31;
 fi
 
-TITLE=$(grep 'Title' "$DATA_DIR"/gameinfo.conf | cut -d'=' -f 2 | tr -d '\n' | tr -d '\r')
+TITLE=$(grep 'Title' "$DATA_DIR"/gameinfo.conf | cut -d'=' -f 2 | tr -d '\n' | tr -d '\r' | sed 's/^ *//g' | sed 's/ *$//g')
 EXECNAME=$(grep 'ExecutableName' "$DATA_DIR"/gameinfo.conf | cut -d'=' -f 2 | tr -d '\n' | tr -d '\r')
 VERSION=$(grep 'Version' "$DATA_DIR/"gameinfo.conf | cut -d'=' -f 2 | tr -d '\n' | tr -d '\r')
 PUBLISHER=$(grep 'Company' "$DATA_DIR"/gameinfo.conf | cut -d'=' -f 2- | tr -d '\n' | tr -d '\r')

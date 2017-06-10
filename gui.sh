@@ -1,21 +1,22 @@
 #!/bin/bash
-CURRENT_DIR=$(dirname "$(readlink -f "$0")")/
-source "$CURRENT_DIR"/script-dialog/script-dialog.sh #folder local version
+SCRIPT_DIR=$(dirname "$(readlink -f "$0")")/
+source "$SCRIPT_DIR"/script-dialog/script-dialog.sh #folder local version
+cd $SCRIPT_DIR
 
 relaunchIfNotVisible
 
 APP_NAME="Test Script"
-if [[ -e "$CURRENT_DIR/game.png" ]]; then
-  WINDOW_ICON="$CURRENT_DIR/game.png"
+if [[ -e "$SCRIPT_DIR/game.png" ]]; then
+  WINDOW_ICON="$SCRIPT_DIR/game.png"
 else
-  WINDOW_ICON="$CURRENT_DIR/game.png.example"
+  WINDOW_ICON="$SCRIPT_DIR/game.png.example"
 fi
 
 
 if [[ $# -eq 0 ]] ; then
   ACTIVITY="Data Directory Discovery"
   messagebox "Select gameinfo.conf"
-  DATA_DIR=$(dirname "$(filepicker "$CURRENT_DIR" "open")")
+  DATA_DIR=$(dirname "$(filepicker "$SCRIPT_DIR" "open")")
 else
     DATA_DIR="$1"
 fi

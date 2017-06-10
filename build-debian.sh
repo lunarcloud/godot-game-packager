@@ -19,7 +19,9 @@ if [[ ! -d "$GAMEFOLDER" ]]; then
     exit 31;
 fi
 
-TITLE_UPPER=$(grep 'Title' "$DATA_DIR"/gameinfo.conf | cut -d'=' -f 2 | tr -d '\n' | tr -d '\r')
+echo "Gamefolder at $GAMEFOLDER"
+
+TITLE_UPPER=$(grep 'Title' "$DATA_DIR"/gameinfo.conf | cut -d'=' -f 2 | tr -d '\n' | tr -d '\r' | sed 's/^ *//g' | sed 's/ *$//g')
 TITLE_LOWER=$(echo $TITLE_UPPER  | tr '[:upper:]' '[:lower:]')
 TITLE_LOWER_UNDERSCORE=$(echo $TITLE_LOWER  | sed -e 's/ /_/g' | sed -e 's/\.//g')
 TITLE_LOWER_DASH=$(echo $TITLE_LOWER  | sed -e 's/ /-/g' | sed -e 's/\.//g')
@@ -76,7 +78,7 @@ cp -r "$GAMEFOLDER"/*   "$DEBIANNAME32"/opt/"$PACKAGENAME"/
 cp game.sh              "$DEBIANNAME32"/opt/"$PACKAGENAME"/
 
 #Copy script-dialog
-mkdir "$DEBIANNAME32"/opt/"$PACKAGENAME"/script-dialog
+mkdir -p "$DEBIANNAME32"/opt/"$PACKAGENAME"/script-dialog
 cp ./script-dialog/script-dialog.sh "$DEBIANNAME32"/opt/"$PACKAGENAME"/script-dialog/
 
 if [ -f $DATA_DIR/license.txt ]; then
@@ -93,18 +95,10 @@ cp ./app.desktop.temp "$DEBIANNAME32"/usr/share/applications/"$PACKAGENAME".desk
 #Create 32bit
 
 if [ "$ARCH" == "32" ] || [ "$ARCH" == "both" ]; then
-
-    #fix architecture
     sed -i "s/Architecture: \(.*\)/Architecture: i386/"  "$DEBIANNAME32"/DEBIAN/control
-
-    # arch specific stuff
-    cp $GAMEFOLDER/"$EXECUTABLENAME".x86      "$DEBIANNAME32"/opt/"$PACKAGENAME"/
-
-    # Build the package
-    echo "attempting to build $DEBIANNAME32.deb ..."
+    cp "$GAMEFOLDER"/"$EXECUTABLENAME".x86 "$DEBIANNAME32"/opt/"$PACKAGENAME"/"$EXECUTABLENAME".x86
     dpkg-deb --build "$DEBIANNAME32" "$DEBIANNAME32".deb
 
-    # Remove arch specific files
     rm "$DEBIANNAME32"/opt/"$PACKAGENAME"/"$EXECUTABLENAME".x86
 fi
 
@@ -113,15 +107,9 @@ fi
 mv "$DEBIANNAME32" "$DEBIANNAME64"
 
 if [ "$ARCH" == "64" ] || [ "$ARCH" == "both" ]; then
-
-    #fix architecture
     `sed -i "s/Architecture: \(.*\)/Architecture: amd64/"  "$DEBIANNAME64"/DEBIAN/control`
+    cp "$GAMEFOLDER"/"$EXECUTABLENAME".amd64 "$DEBIANNAME64"/opt/"$PACKAGENAME"/"$EXECUTABLENAME".amd64
 
-    # arch specific stuff
-    cp $GAMEFOLDER/"$EXECUTABLENAME".amd64      "$DEBIANNAME32"/opt/"$PACKAGENAME"/
-
-    # Build the package
-    echo "attempting to build $DEBIANNAME64.deb ..."
     dpkg-deb --build "$DEBIANNAME64" "$DEBIANNAME64".deb
 fi
 
