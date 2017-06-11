@@ -1,14 +1,15 @@
 # Godot Game Installer Creation Scripts
 Create installers for Godot games for Windows, Mac, and Linux (Debian / Ubuntu).
 
-## Environment
+
+## Prerequisites
 This was made to run on Linux.
+If you don't have Linux running yet, I suggest installing [VirtualBox](https://www.virtualbox.org) and installing the latest LTS version of [Ubuntu](https://www.ubuntu.com/download/desktop) on it.
 
-### Building macOS disk images
-`sudo apt install icnsutils`
+Then run the following command in the terminal which will install an icon converter tool for the macOS builder and the Windows installer creation tool NSIS:
 
-### Building Windows Installers
-`sudo apt install nsis`
+`sudo apt install icnsutils nsis`
+
 
 ## Instructions
   1. Create a folder for your installer project
