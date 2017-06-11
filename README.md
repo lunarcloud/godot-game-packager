@@ -2,13 +2,7 @@
 Create installers for Godot games for Windows, Mac, and Linux (Debian / Ubuntu).
 
 ## Environment
-This was made to run on Linux. I'd recommend running on Linux, whether natively or via a virtual machine like [VirtualBox](https://www.virtualbox.org).
-
-You will need [Cygwin](https://www.cygwin.com/) or [WSL](https://msdn.microsoft.com/commandline/wsl/about) to run on Windows.
-
-It may not work on macOS. Patches to script-dialog and/or this to make it work would be welcome.
-
-## Prerequisites
+This was made to run on Linux.
 
 ### Building macOS disk images
 `sudo apt install icnsutils`
