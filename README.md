@@ -8,6 +8,14 @@ You will need [Cygwin](https://www.cygwin.com/) or [WSL](https://msdn.microsoft.
 
 It may not work on macOS. Patches to script-dialog and/or this to make it work would be welcome.
 
+## Prerequisites
+
+### Building macOS disk images
+`sudo apt install icnsutils`
+
+### Building Windows Installers
+`sudo apt install nsis`
+
 ## Instructions
   1. Create a folder for your installer project
   2. Drop your Godot game exports and "*.pck" data into this folder
