@@ -19,6 +19,4 @@ Then run the following command in the terminal which will install an icon conver
   5. Create your gameinfo.conf
   6. (Optional) create the company.png
   7. (Optional) create a license.txt
-  8. Run gui.sh or individually run build-* scripts
-  9. ???
-  10. Profit!
+  8. Run gui.sh
